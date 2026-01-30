@@ -94,4 +94,24 @@ public class ItemServiceImpl implements ItemService {
             throw new RuntimeException(e);
         }
     }
+
+
+    @Override
+    public String mainPageAction(Long id, String action, String search, String sort, int pageNumber, int pageSize) {
+
+        if ("PLUS".equals(action)) {
+
+            cartService.add(id);
+        } else if ("MINUS".equals(action)) {
+            cartService.remove(id);
+        }
+
+        String redirectUrl = "/items" +
+                "?search=" + (search != null ? search : "") +
+                "&sort=" + sort +
+                "&pageNumber=" + pageNumber +
+                "&pageSize=" + pageSize;
+
+        return "redirect:" + redirectUrl;
+    }
 }
