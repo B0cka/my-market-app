@@ -1,0 +1,120 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-tables
+      author: student
+      changes:
+        # Таблица ТОВАРЫ
+        - createTable:
+            tableName: items
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(2000)
+              - column:
+                  name: price
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: img_path
+                  type: varchar(255)
+
+        # Таблица ЗАКАЗЫ
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: total_sum
+                  type: bigint
+              - column:
+                  name: created_at
+                  type: timestamp
+
+        # Таблица ПОЗИЦИИ В ЗАКАЗЕ
+        - createTable:
+            tableName: order_items
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: int
+              - column:
+                  name: price_per_item
+                  type: bigint
+              - column:
+                  name: order_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_order_items_order
+                    references: orders(id)
+              - column:
+                  name: item_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_order_items_item
+                    references: items(id)
+
+  - changeSet:
+      id: 2-insert-initial-data
+      author: student
+      changes:
+        - insert:
+            tableName: items
+            columns:
+              - column: { name: title, value: "iPhone" }
+              - column: { name: description, value: "айфон" }
+              - column: { name: price, valueNumeric: 120000 }
+              - column: { name: img_path, value: "/images/iphone.jpg" }
+        - insert:
+            tableName: items
+            columns:
+              - column: { name: title, value: "gtx 1060" }
+              - column: { name: description, value: "Старая, но легендарная. хз зачем нужна еще)" }
+              - column: { name: price, valueNumeric: 100000 }
+              - column: { name: img_path, value: "/images/macbook.jpg" }
+        - insert:
+            tableName: items
+            columns:
+              - column: { name: title, value: "Наушники" }
+              - column: { name: description, value: "Лучшее шумоподавление на рынке." }
+              - column: { name: price, valueNumeric: 25000 }
+              - column: { name: img_path, value: "/images/headphones.jpg" }
+        - insert:
+            tableName: items
+            columns:
+              - column: { name: title, value: "Кофемашинка" }
+              - column: { name: description, value: "прикольный кофе" }
+              - column: { name: price, valueNumeric: 45000 }
+              - column: { name: img_path, value: "/images/coffee.jpg" }
+        - insert:
+            tableName: items
+            columns:
+              - column: { name: title, value: "Умная колонка" }
+              - column: { name: description, value: "Включает музыку и управляет светом." }
+              - column: { name: price, valueNumeric: 5000 }
+              - column: { name: img_path, value: "/images/speaker.jpg" }
