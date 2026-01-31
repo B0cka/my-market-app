@@ -1,6 +1,7 @@
 package com.b0cka.controllers;
 
 import com.b0cka.dto.ItemsPageDto;
+import com.b0cka.models.Item;
 import com.b0cka.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,4 +64,30 @@ public class ItemController {
     ) {
         return itemService.mainPageAction(id, action, search, sort, pageNumber, pageSize);
     }
+
+    @GetMapping("/items{id}")
+    public String getItem(@PathVariable Long id, Model model) {
+
+        Item item = itemService.getItem(id);
+
+        model.addAttribute("item", item);
+
+        return "item";
+    }
+
+    @GetMapping("/item/{id}")
+    public String getItem1(@PathVariable Long id, Model model) {
+        Item item = itemService.getItem(id);
+        model.addAttribute("item", item);
+        return "item";
+    }
+
+
+    @PostMapping("/items/{id}")
+    public String itemPageAction(@PathVariable Long id,
+                                 @RequestParam String action) {
+
+        return itemService.itemPageAction(id, action);
+    }
+
 }

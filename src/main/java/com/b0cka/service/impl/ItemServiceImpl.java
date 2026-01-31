@@ -13,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final CartService cartService;
+    private final CartServiceImpl cartServiceImpl;
     @Override
     public ItemsPageDto getItems(String search, String sort, int page, int size) {
         Sort sortObj = Sort.unsorted();
@@ -51,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
         List<Item> row = new ArrayList<>();
 
         for(Item item : items){
-            int countInCart = cartService.getCount(item.getId());
+            int countInCart = cartServiceImpl.getCount(item.getId());
             item.setCount(countInCart);
 
             row.add(item);
@@ -101,9 +98,9 @@ public class ItemServiceImpl implements ItemService {
 
         if ("PLUS".equals(action)) {
 
-            cartService.add(id);
+            cartServiceImpl.add(id);
         } else if ("MINUS".equals(action)) {
-            cartService.remove(id);
+            cartServiceImpl.remove(id);
         }
 
         String redirectUrl = "/items" +
@@ -113,5 +110,29 @@ public class ItemServiceImpl implements ItemService {
                 "&pageSize=" + pageSize;
 
         return "redirect:" + redirectUrl;
+    }
+
+    @Override
+    public String itemPageAction(Long id, String action) {
+
+        if ("PLUS".equals(action)) {
+
+            cartServiceImpl.add(id);
+        } else if ("MINUS".equals(action)) {
+            cartServiceImpl.remove(id);
+        }
+
+        String redirectUrl =
+                "/item/" + id;
+        return "redirect:" + redirectUrl;
+
+    }
+
+    @Override
+    public Item getItem(Long id) {
+        return itemRepository.findById(id).map(item -> {
+            item.setCount(cartServiceImpl.getCount(id));
+            return item;
+        }).orElseThrow(() -> new RuntimeException("Товар с id " + id + " не найден"));
     }
 }
