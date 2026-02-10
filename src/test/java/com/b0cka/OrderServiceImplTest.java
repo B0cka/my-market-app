@@ -1,9 +1,10 @@
-package com.b0cka.service;
+package com.b0cka;
 
 import com.b0cka.models.Item;
 import com.b0cka.models.Order;
 import com.b0cka.repository.ItemRepository;
 import com.b0cka.repository.OrderRepository;
+import com.b0cka.service.CartService;
 import com.b0cka.service.impl.CartServiceImpl;
 import com.b0cka.service.impl.OrderServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.*;
 class OrderServiceImplTest {
 
     @Mock
-    private CartServiceImpl cartService;
+    private CartService cartService;
     @Mock
     private OrderRepository orderRepository;
     @Mock

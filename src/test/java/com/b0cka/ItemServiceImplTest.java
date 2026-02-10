@@ -3,6 +3,7 @@ package com.b0cka;
 import com.b0cka.dto.ItemsPageDto;
 import com.b0cka.models.Item;
 import com.b0cka.repository.ItemRepository;
+import com.b0cka.service.CartService;
 import com.b0cka.service.impl.CartServiceImpl;
 import com.b0cka.service.impl.ItemServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +28,7 @@ class ItemServiceImplTest {
     @Mock
     private ItemRepository itemRepository;
     @Mock
-    private CartServiceImpl cartService;
+    private CartService cartService;
 
     @InjectMocks
     private ItemServiceImpl itemService;

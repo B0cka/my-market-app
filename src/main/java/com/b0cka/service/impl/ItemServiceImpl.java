@@ -4,6 +4,7 @@ import com.b0cka.repository.ItemRepository;
 import com.b0cka.dto.ItemsPageDto;
 import com.b0cka.models.Item;
 import com.b0cka.models.Paging;
+import com.b0cka.service.CartService;
 import com.b0cka.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final CartServiceImpl cartServiceImpl;
+    private final CartService cartServiceImpl;
     @Override
     public ItemsPageDto getItems(String search, String sort, int page, int size) {
         Sort sortObj = Sort.unsorted();

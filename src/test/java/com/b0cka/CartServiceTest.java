@@ -2,6 +2,7 @@ package com.b0cka;
 
 import com.b0cka.models.Item;
 import com.b0cka.repository.ItemRepository;
+import com.b0cka.service.CartService;
 import com.b0cka.service.impl.CartServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class CartServiceTest {
     private ItemRepository itemRepository;
 
     @InjectMocks
-    private CartServiceImpl cartService;
+    private CartService cartService;
 
     @Test
     void testAddAndCount() {

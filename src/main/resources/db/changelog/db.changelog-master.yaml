@@ -81,6 +81,7 @@ databaseChangeLog:
 
   - changeSet:
       id: 2-insert-initial-data
+      context: dev
       author: student
       changes:
         - insert:
