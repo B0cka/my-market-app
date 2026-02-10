@@ -22,7 +22,7 @@ class CartServiceTest {
     private ItemRepository itemRepository;
 
     @InjectMocks
-    private CartService cartService;
+    private CartServiceImpl cartService;
 
     @Test
     void testAddAndCount() {
