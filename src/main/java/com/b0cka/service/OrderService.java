@@ -1,14 +1,16 @@
 package com.b0cka.service;
 
 import com.b0cka.models.Order;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface OrderService {
-    Long createOrder();
+    Mono<Long> createOrder();
 
-    List<Order> getAllOrders();
+    Mono<List<Order>> getAllOrders();
 
-    Order getOrder(Long id);
+    Mono<Order> getOrder(Long id);
 
 }

@@ -1,22 +1,27 @@
 package com.b0cka.models;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "orders")
+
+@Table("orders")
 @Data
 @NoArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column("total_sum")
     private Long totalSum;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items;
+    @Transient
+    private List<OrderItem> items = new ArrayList<>();
+
 }
