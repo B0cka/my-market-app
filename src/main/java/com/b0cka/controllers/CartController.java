@@ -1,6 +1,5 @@
 package com.b0cka.controllers;
 
-import com.b0cka.dto.OrdersDto;
 import com.b0cka.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import reactor.core.publisher.Mono;
 
 @Controller
 @RequestMapping("/cart")
@@ -20,17 +20,21 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/items")
-    public String showCart(Model model) {
-        OrdersDto dto = cartService.showCart();
-
-        model.addAttribute("items", dto.getItems());
-        model.addAttribute("total", dto.getTotalSum());
-
-        return "cart";
+    public Mono<String> showCart(Model model) {
+        return cartService.showCart()
+                .map(dto -> {
+                    model.addAttribute("items", dto.getItems());
+                    model.addAttribute("total", dto.getTotalSum());
+                    return "cart";
+                });
     }
 
     @PostMapping("/items")
-    public String updateCart(@RequestParam Long id, @RequestParam String action) {
-        return cartService.updateCart(id, action);
+    public Mono<String> updateCart(org.springframework.web.server.ServerWebExchange exchange) {
+        return exchange.getFormData().flatMap(formData -> {
+            Long id = Long.parseLong(formData.getFirst("id"));
+            String action = formData.getFirst("action");
+            return cartService.updateCart(id, action);
+        });
     }
 }

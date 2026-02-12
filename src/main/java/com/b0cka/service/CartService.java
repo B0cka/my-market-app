@@ -1,6 +1,7 @@
 package com.b0cka.service;
 
 import com.b0cka.dto.OrdersDto;
+import reactor.core.publisher.Mono;
 
 
 import java.util.Map;
@@ -15,9 +16,9 @@ public interface CartService {
 
     Map<Long, Integer> getItems();
 
-    OrdersDto showCart();
+    Mono<OrdersDto> showCart();
 
-    String updateCart(Long id, String action);
+    Mono<String> updateCart(Long id, String action);
 
     void clear();
 }
