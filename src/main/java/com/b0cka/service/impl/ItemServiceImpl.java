@@ -8,13 +8,11 @@ import com.b0cka.service.CartService;
 import com.b0cka.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,77 +23,78 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final CartService cartServiceImpl;
+
     @Override
-    public ItemsPageDto getItems(String search, String sort, int page, int size) {
-        Sort sortObj = Sort.unsorted();
+    public Mono<ItemsPageDto> getItems(String search, String sort, int page, int size) {
+
+        int pageNumber = Math.max(page, 1);
+        int pageSize = Math.max(size, 1);
+
+        long offset = (long) (pageNumber - 1) * pageSize;
+        int limit = pageSize + 1;
+
+        boolean hasSearch = (search != null && !search.isBlank());
+        String q = hasSearch ? search.trim() : "";
+
+        Flux<Item> src;
 
         if ("ALPHA".equals(sort)) {
-            sortObj = Sort.by("title").ascending();
+            src = itemRepository.searchAlpha(q, limit, offset);
         } else if ("PRICE".equals(sort)) {
-            sortObj = Sort.by("price").ascending();
-        }
-
-        Pageable pageable = PageRequest.of(page - 1, size, sortObj);
-        Page<Item> pageResult;
-
-        if (search != null && !search.isBlank()) {
-            pageResult = itemRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
+            src = itemRepository.searchPrice(q, limit, offset);
         } else {
-            pageResult = itemRepository.findAll(pageable);
+            src = itemRepository.searchNoSort(q, limit, offset);
         }
 
-        List<Item> items = pageResult.getContent();
-        List<List<Item>> ret = new ArrayList<>();
-        List<Item> row = new ArrayList<>();
+        return src.collectList().map(items -> {
 
-        for(Item item : items){
-            int countInCart = cartServiceImpl.getCount(item.getId());
-            item.setCount(countInCart);
+            boolean hasNext = items.size() > pageSize;
 
-            row.add(item);
-            if(row.size() == 3){
-                ret.add(row);
-                row = new ArrayList<>();
+            List<Item> pageItems = hasNext ? items.subList(0, pageSize) : items;
+
+            pageItems.forEach(item -> item.setCount(cartServiceImpl.getCount(item.getId())));
+            List<List<Item>> grid = new ArrayList<>();
+
+            for (int i = 0; i < pageItems.size(); i += 3) {
+
+                List<Item> row = new ArrayList<>(pageItems.subList(i, Math.min(i + 3, pageItems.size())));
+
+
+                while (row.size() < 3) {
+                    Item dummy = new Item();
+                    dummy.setId(-1L);
+                    row.add(dummy);
+                }
+                grid.add(row);
             }
 
-        }
+            Paging paging = Paging.builder()
+                    .pageNumber(pageNumber)
+                    .pageSize(pageSize)
+                    .hasPrevious(pageNumber > 1)
+                    .hasNext(hasNext)
+                    .build();
 
-        if(!row.isEmpty()){
-            while (row.size() != 3){
-                Item dummy = new Item();
-                dummy.setId(-1L);
-                row.add(dummy);
-            }
-            ret.add(row);
-        }
-
-        Paging paging = Paging.builder()
-                .pageNumber(pageResult.getNumber() + 1)
-                .hasNext(pageResult.hasNext())
-                .hasPrevious(pageResult.hasPrevious())
-                .pageSize(pageResult.getSize())
-                .build();
-
-        return new ItemsPageDto(ret, paging);
+            return new ItemsPageDto(grid, paging);
+        });
     }
 
     @Override
-    public byte[] getImg(String filename) {
+    public Mono<byte[]> getImg(String filename) {
         String path = "/images/" + filename;
-        try {
-            var inputStream = getClass().getResourceAsStream(path);
-            if (inputStream == null) {
-                return new byte[0];
-            }
-            return inputStream.readAllBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        return Mono.fromCallable(() -> {
+                    try (var in = getClass().getResourceAsStream(path)) {
+                        if (in == null) return null;
+                        return in.readAllBytes();
+                    }
+                })
+                .subscribeOn(Schedulers.boundedElastic())
+                .flatMap(bytes -> bytes == null ? Mono.empty() : Mono.just(bytes));
     }
 
-
     @Override
-    public String mainPageAction(Long id, String action, String search, String sort, int pageNumber, int pageSize) {
+    public Mono<String> mainPageAction(Long id, String action, String search, String sort, int pageNumber, int pageSize) {
 
         if ("PLUS".equals(action)) {
 
@@ -109,12 +108,12 @@ public class ItemServiceImpl implements ItemService {
                 "&sort=" + sort +
                 "&pageNumber=" + pageNumber +
                 "&pageSize=" + pageSize;
-
-        return "redirect:" + redirectUrl;
+        log.info("redirect:" + redirectUrl);
+        return Mono.just("redirect:" + redirectUrl);
     }
 
     @Override
-    public String itemPageAction(Long id, String action) {
+    public Mono<String> itemPageAction(Long id, String action) {
 
         if ("PLUS".equals(action)) {
 
@@ -125,15 +124,17 @@ public class ItemServiceImpl implements ItemService {
 
         String redirectUrl =
                 "/item/" + id;
-        return "redirect:" + redirectUrl;
+        return Mono.just("redirect:" + redirectUrl);
 
     }
 
     @Override
-    public Item getItem(Long id) {
-        return itemRepository.findById(id).map(item -> {
-            item.setCount(cartServiceImpl.getCount(id));
-            return item;
-        }).orElseThrow(() -> new RuntimeException("Товар с id " + id + " не найден"));
+    public Mono<Item> getItem(Long id) {
+        return itemRepository.findById(id)
+                .switchIfEmpty(Mono.error(new RuntimeException("Товар не найден")))
+                .map(item -> {
+                    item.setCount(cartServiceImpl.getCount(id));
+                    return item;
+                });
     }
 }

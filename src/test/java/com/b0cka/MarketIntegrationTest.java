@@ -7,10 +7,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.context.ImportTestcontainers;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -19,20 +17,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MarketIntegrationTest{
 
     @Autowired
-    private MockMvc mockMvc;
+    private WebTestClient webTestClient;
 
     @Test
-    void testMainPageLoads() throws Exception {
-
-        mockMvc.perform(get("/items"))
-                .andExpect(view().name("items"))
-                .andExpect(model().attributeExists("items", "paging"));
+    void testItemsPage() {
+        webTestClient.get().uri("/items")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .value(org.hamcrest.Matchers.containsString("Витрина магазина"));
     }
 
     @Test
-    void testCartPageLoads() throws Exception {
-        mockMvc.perform(get("/cart/items"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cart"));
+    void testCartPage() {
+        webTestClient.get().uri("/cart/items")
+                .exchange()
+                .expectStatus().isOk();
     }
 }
