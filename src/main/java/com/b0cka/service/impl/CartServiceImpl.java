@@ -13,27 +13,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private final ItemRepository itemRepository;
 
-    private final Map<Long, Integer> items = new HashMap<>();
+    private final Map<Long, Integer> items = new ConcurrentHashMap<>();
 
     public void add(Long id) {
-        items.merge(id, 1, Integer::sum);
+        items.compute(id, (key, val) -> (val == null) ? 1 : val + 1);
     }
 
     public void remove(Long id) {
-        if (items.containsKey(id)) {
-            int current = items.get(id);
-            if (current > 1) {
-                items.put(id, current - 1);
-            } else {
-                items.remove(id);
-            }
-        }
+        items.computeIfPresent(id, (key, val) -> (val > 1) ? val - 1 : null);
     }
 
     public int getCount(Long id) {

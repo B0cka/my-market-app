@@ -27,9 +27,12 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final OrderItemRepository orderItemRepository;
-    private record Line(Item item, int qty) {}
+
+    private record Line(Item item, int qty) {
+    }
 
     @Override
+    @Transactional
     public Mono<Long> createOrder() {
         Map<Long, Integer> cartMap = cartService.getItems();
         if (cartMap.isEmpty()) {
@@ -87,17 +90,27 @@ public class OrderServiceImpl implements OrderService {
 
     private Mono<Order> populateOrder(Order order) {
         return orderItemRepository.findAllByOrderId(order.getId())
-                .flatMap(orderItem ->
-                        itemRepository.findById(orderItem.getItemId())
-                                .map(realItem -> {
-                                    orderItem.setItem(realItem);
-                                    return orderItem;
-                                })
-                )
                 .collectList()
-                .map(items -> {
-                    order.setItems(items);
-                    return order;
+                .flatMap(orderItems -> {
+                    if (orderItems.isEmpty()) return Mono.just(order);
+
+                    List<Long> itemIds = orderItems.stream()
+                            .map(OrderItem::getItemId)
+                            .toList();
+
+                    return itemRepository.findAllById(itemIds)
+                            .collectList()
+                            .map(realItems -> {
+                                Map<Long, Item> itemMap = realItems.stream()
+                                        .collect(java.util.stream.Collectors.toMap(Item::getId, i -> i));
+
+                                for (OrderItem oi : orderItems) {
+                                    oi.setItem(itemMap.get(oi.getItemId()));
+                                }
+
+                                order.setItems(orderItems);
+                                return order;
+                            });
                 });
     }
 }
