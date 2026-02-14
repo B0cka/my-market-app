@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.testcontainers.context.ImportTestcontainers;
 import reactor.test.StepVerifier;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataR2dbcTest
@@ -34,4 +36,5 @@ class ItemRepositoryR2dbcTest{
                 })
                 .verifyComplete();
     }
+
 }

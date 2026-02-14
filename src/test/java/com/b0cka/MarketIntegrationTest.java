@@ -1,6 +1,7 @@
 package com.b0cka;
 
 import com.b0cka.cont.PostgreContainer1;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,5 +34,13 @@ class MarketIntegrationTest{
         webTestClient.get().uri("/cart/items")
                 .exchange()
                 .expectStatus().isOk();
+    }
+
+    @Test
+    @DisplayName("POST /buy: Оформление заказа")
+    void testPostBuyRedirectsToOrder() {
+        webTestClient.post().uri("/buy")
+                .exchange()
+                .expectStatus().is3xxRedirection();
     }
 }

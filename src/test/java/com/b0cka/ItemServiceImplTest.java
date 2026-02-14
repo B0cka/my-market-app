@@ -5,12 +5,14 @@ import com.b0cka.models.Item;
 import com.b0cka.repository.ItemRepository;
 import com.b0cka.service.CartService;
 import com.b0cka.service.impl.ItemServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -48,5 +50,32 @@ class ItemServiceImplTest {
                     assertEquals(-1L, firstRow.get(2).getId());
                 })
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("getItems: Поиск несуществующего товара")
+    void getItems_EmptyResult() {
+        when(itemRepository.searchNoSort(anyString(), anyInt(), anyLong()))
+                .thenReturn(Flux.empty());
+
+        itemService.getItems("Ghost", "NO", 1, 5)
+                .as(StepVerifier::create)
+                .assertNext(dto -> {
+                    assertTrue(dto.getGrid().isEmpty());
+                    assertFalse(dto.getPaging().getHasPrevious());
+                    assertEquals(1, dto.getPaging().getPageNumber());
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("getItem: Ошибка если товара нет")
+    void getItem_NotFound() {
+        when(itemRepository.findById(999L)).thenReturn(Mono.empty());
+
+        itemService.getItem(999L)
+                .as(StepVerifier::create)
+                .expectError(RuntimeException.class)
+                .verify();
     }
 }
