@@ -34,46 +34,44 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Mono<Long> createOrder() {
-        Map<Long, Integer> cartMap = cartService.getItems();
-        if (cartMap.isEmpty()) {
-            return Mono.empty();
-        }
 
-        return itemRepository.findAllById(cartMap.keySet())
-                .map(item -> new Line(item, cartMap.get(item.getId())))
+        return cartService.getItems()
+                .flatMap(cartMap -> {
 
-                .collectList()
+                    if (cartMap.isEmpty()) return Mono.empty();
 
-                .flatMap(lines -> {
-                    long totalSum = lines.stream()
-                            .mapToLong(l -> l.item().getPrice() * l.qty())
-                            .sum();
+                    return itemRepository.findAllById(cartMap.keySet())
+                            .map(item -> new Line(item, cartMap.get(item.getId())))
+                            .collectList()
+                            .flatMap(lines -> {
 
-                    Order order = new Order();
-                    order.setTotalSum(totalSum);
+                                long totalSum = lines.stream()
+                                        .mapToLong(l -> l.item().getPrice() * l.qty())
+                                        .sum();
 
+                                Order order = new Order();
+                                order.setTotalSum(totalSum);
 
-                    return orderRepository.save(order)
-                            .flatMap(savedOrder -> {
+                                return orderRepository.save(order)
+                                        .flatMap(savedOrder -> {
 
-                                Flux<OrderItem> orderItemsToSave =
-                                        Flux.fromIterable(lines)
-                                                .map(l -> {
-                                                    OrderItem oi = new OrderItem();
-                                                    oi.setOrderId(savedOrder.getId());
-                                                    oi.setItemId(l.item().getId());
-                                                    oi.setQuantity(l.qty());
-                                                    oi.setPricePerItem(l.item().getPrice());
-                                                    return oi;
-                                                });
+                                            Flux<OrderItem> orderItemsToSave = Flux.fromIterable(lines)
+                                                    .map(l -> {
+                                                        OrderItem oi = new OrderItem();
+                                                        oi.setOrderId(savedOrder.getId());
+                                                        oi.setItemId(l.item().getId());
+                                                        oi.setQuantity(l.qty());
+                                                        oi.setPricePerItem(l.item().getPrice());
+                                                        return oi;
+                                                    });
 
-                                return orderItemRepository.saveAll(orderItemsToSave)
-                                        .then(Mono.just(savedOrder.getId()));
+                                            return orderItemRepository.saveAll(orderItemsToSave)
+                                                    .then(Mono.just(savedOrder.getId()));
+                                        });
                             });
                 })
-                .doOnSuccess(id -> cartService.clear());
+                .flatMap(orderId -> cartService.clear().thenReturn(orderId));
     }
-
     @Override
     public Mono<List<Order>> getAllOrders() {
         return orderRepository.findAll()

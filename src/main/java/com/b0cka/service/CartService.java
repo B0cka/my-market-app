@@ -8,17 +8,17 @@ import java.util.Map;
 
 public interface CartService {
 
-    void add(Long id);
+    Mono<Void> add(Long id);
 
-    void remove(Long id);
+    Mono<Void> remove(Long id);
 
-    int getCount(Long id);
+    Mono<Integer> getCount(Long id);
 
-    Map<Long, Integer> getItems();
+    Mono<Map<Long, Integer>> getItems();
 
     Mono<OrdersDto> showCart();
 
     Mono<String> updateCart(Long id, String action);
 
-    void clear();
+    Mono<Void> clear();
 }

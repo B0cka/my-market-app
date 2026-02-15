@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -50,7 +51,7 @@ public class ItemController {
 
     @PostMapping("/items")
     public Mono<String> mainPageAction(
-            org.springframework.web.server.ServerWebExchange exchange
+            ServerWebExchange exchange
     ) {
         return exchange.getFormData().flatMap(formData -> {
             String idStr = formData.getFirst("id");
@@ -86,7 +87,7 @@ public class ItemController {
 
 
     @PostMapping("/items/{id}")
-    public Mono<String> itemPageAction(@PathVariable Long id, org.springframework.web.server.ServerWebExchange exchange) {
+    public Mono<String> itemPageAction(@PathVariable Long id, ServerWebExchange exchange) {
         return exchange.getFormData().flatMap(formData -> {
             String action = formData.getFirst("action");
             return itemService.itemPageAction(id, action);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -30,7 +31,7 @@ public class CartController {
     }
 
     @PostMapping("/items")
-    public Mono<String> updateCart(org.springframework.web.server.ServerWebExchange exchange) {
+    public Mono<String> updateCart(ServerWebExchange exchange) {
         return exchange.getFormData().flatMap(formData -> {
             Long id = Long.parseLong(formData.getFirst("id"));
             String action = formData.getFirst("action");
