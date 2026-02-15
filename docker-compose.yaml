@@ -8,20 +8,32 @@ services:
       POSTGRES_DB: my-market-app
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis1
+    restart: always
+    ports:
+      - "6379:6379"
+
   app:
     build: .
     ports:
       - "8080:8080"
     depends_on:
       - db
+      - redis
     restart: on-failure
     environment:
-      SPRING_DATASOURCE_URL: r2dbc:postgresql://db:5432/my-market-app
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-
+      SPRING_R2DBC_URL: r2dbc:postgresql://db:5432/my-market-app
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: postgres
 
       SPRING_LIQUIBASE_URL: jdbc:postgresql://db:5432/my-market-app
       SPRING_LIQUIBASE_USER: postgres
       SPRING_LIQUIBASE_PASSWORD: postgres
+
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
