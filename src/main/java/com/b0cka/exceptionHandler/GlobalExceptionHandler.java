@@ -1,6 +1,7 @@
 package com.b0cka.exceptionHandler;
 
 import com.b0cka.dto.ErrorResponse;
+import com.b0cka.ex.NotFoundImageException;
 import com.b0cka.ex.RedisException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,12 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred");
         error.setTimestamp(LocalDateTime.now().format(customFormatter));
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotFoundImageException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundImageException(NotFoundImageException ex) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+        error.setTimestamp(LocalDateTime.now().format(customFormatter));
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

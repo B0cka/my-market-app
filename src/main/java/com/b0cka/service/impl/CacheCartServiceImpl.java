@@ -3,7 +3,9 @@ package com.b0cka.service.impl;
 import com.b0cka.dto.CartItemsDto;
 import com.b0cka.service.CacheCartService;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -13,19 +15,23 @@ import java.time.Duration;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+
 public class CacheCartServiceImpl implements CacheCartService {
 
     private final ReactiveRedisTemplate<String, Object> reactiveRedisTemplate;
 
-    Duration TIME_TO_LIVE_CHISELKI_IN_MIN = Duration.ofMinutes(5);
+    @Value("${items.cart.time.cache}")
+    private Duration TIME_TO_LIVE_CHISELKI_IN_MIN;
 
-    String KEY = "items:cart";
+    @Value("${items.cart.cache}")
+    private String KEY;
 
     @Override
     public Mono<Void> add(Long id) {
 
         return reactiveRedisTemplate.opsForHash()
                 .increment(KEY, id.toString(), 1)
+                .flatMap(count -> reactiveRedisTemplate.expire(KEY, TIME_TO_LIVE_CHISELKI_IN_MIN))
                 .then();
     }
 
@@ -44,7 +50,7 @@ public class CacheCartServiceImpl implements CacheCartService {
     }
 
     @Override
-    public Mono<Void> removeAll(Long id){
+    public Mono<Void> removeAll(Long id) {
         return reactiveRedisTemplate.opsForHash()
                 .remove(KEY, id.toString())
                 .then();
@@ -55,7 +61,7 @@ public class CacheCartServiceImpl implements CacheCartService {
 
         return reactiveRedisTemplate.opsForHash()
                 .get(KEY, id.toString())
-                .map(o -> (Integer) o)
+                .map(o -> Integer.parseInt(o.toString()))
                 .defaultIfEmpty(0);
     }
 
@@ -77,7 +83,6 @@ public class CacheCartServiceImpl implements CacheCartService {
         return reactiveRedisTemplate.opsForHash()
                 .delete(KEY)
                 .then();
-
 
     }
 

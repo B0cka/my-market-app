@@ -1,5 +1,6 @@
 package com.b0cka.service.impl;
 
+import com.b0cka.ex.NotFoundImageException;
 import com.b0cka.repository.ItemRepository;
 import com.b0cka.dto.ItemsPageDto;
 import com.b0cka.models.Item;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,7 @@ public class ItemServiceImpl implements ItemService {
                     }
 
                     log.info("Кеш пуст! Идем в БД и прогреваем кеш...");
-                    return refreshAllCaches()
-                            .then(fetchItemsFromDb(search, sort, pageNumber, pageSize));
+                    return fetchItemsFromDb(search, sort, pageNumber, pageSize);
                 })
 
                 .zipWith(cartServiceImpl.getItems())
@@ -129,14 +130,15 @@ public class ItemServiceImpl implements ItemService {
                 });
     }
 
-    private Mono<Void> refreshAllCaches() {
+    @Override
+    public Mono<Void> refreshAllCaches() {
         return itemRepository.findAll()
-                .collectList()
-                .flatMap(all -> Mono.zip(
-                        cacheMainService.sortByPrice(all),
-                        cacheMainService.sortByAlpha(all),
-                        cacheMainService.setForSearch(all),
-                        Flux.fromIterable(all).flatMap(cacheMainService::saveInCache).collectList()
+                .buffer(10)
+                .flatMap(batch -> Mono.zip(
+                        cacheMainService.sortByPrice(batch),
+                        cacheMainService.sortByAlpha(batch),
+                        cacheMainService.setForSearch(batch),
+                        Flux.fromIterable(batch).flatMap(cacheMainService::saveInCache).collectList()
                 ))
                 .then();
     }

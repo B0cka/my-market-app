@@ -1,7 +1,7 @@
 package com.b0cka.controllers;
+import com.b0cka.ex.NotFoundImageException;
 import com.b0cka.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 @Controller
 @Slf4j
@@ -38,15 +40,14 @@ public class ItemController {
 
     }
 
-    @SneakyThrows
     @GetMapping("/images/{filename:.+}")
     public Mono<ResponseEntity<byte[]>> getImg(@PathVariable String filename) {
         return itemService.getImg(filename)
                 .map(bytes -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG)
                         .body(bytes))
-                .defaultIfEmpty(ResponseEntity.notFound().build())
-                .onErrorResume(e -> Mono.just(ResponseEntity.notFound().build()));
+                .switchIfEmpty(Mono.error(new NotFoundImageException("Image not found: " + filename)))
+                .onErrorMap(IOException.class, e -> new NotFoundImageException("Image not found: " + filename));
     }
 
     @PostMapping("/items")
