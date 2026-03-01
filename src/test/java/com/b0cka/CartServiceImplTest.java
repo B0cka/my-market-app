@@ -1,5 +1,6 @@
 package com.b0cka;
 
+import com.b0cka.dto.CartItemsDto;
 import com.b0cka.models.Item;
 import com.b0cka.repository.ItemRepository;
 import com.b0cka.service.CacheCartService;
@@ -13,8 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +49,7 @@ class CartServiceImplTest {
     @Test
     @DisplayName("showCart: Расчет суммы заказа")
     void showCart_Calculation() {
-        when(cacheCartService.getItems()).thenReturn(Mono.just(new com.b0cka.dto.HDto(java.util.Map.of(1L, 2))));
+        when(cacheCartService.getItems()).thenReturn(Mono.just(new CartItemsDto(java.util.Map.of(1L, 2))));
 
         Item item = new Item(); item.setId(1L); item.setPrice(100L);
         when(itemRepository.findAllById(any(Iterable.class))).thenReturn(Flux.just(item));

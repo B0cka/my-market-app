@@ -11,7 +11,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HDto {
+public class CartItemsDto {
 
-    private Map<Long, Integer> i;
+    private Map<Long, Integer> itemQuantities;
 }

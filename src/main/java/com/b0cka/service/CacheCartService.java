@@ -1,6 +1,6 @@
 package com.b0cka.service;
 
-import com.b0cka.dto.HDto;
+import com.b0cka.dto.CartItemsDto;
 import reactor.core.publisher.Mono;
 
 public interface CacheCartService {
@@ -11,7 +11,7 @@ public interface CacheCartService {
 
     Mono<Integer> getCount(Long id);
 
-    Mono<HDto> getItems();
+    Mono<CartItemsDto> getItems();
 
     Mono<Void> clean();
 

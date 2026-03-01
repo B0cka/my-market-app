@@ -38,7 +38,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Mono<Map<Long, Integer>> getItems() {
         return cartService.getItems()
-                .map(hDto -> hDto.getI());
+                .map(hDto -> hDto.getItemQuantities());
     }
 
 

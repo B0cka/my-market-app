@@ -1,6 +1,6 @@
 package com.b0cka.service.impl;
 
-import com.b0cka.ex.RedisTrouble;
+import com.b0cka.ex.RedisException;
 import com.b0cka.models.Item;
 import com.b0cka.service.CacheMainService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +53,7 @@ public class CacheMainServiceImpl implements CacheMainService {
         return Mono.zip(saveBody, indexPrice, indexAlpha)
                 .thenMany(indexWords)
                 .then(Mono.just(true))
-                .onErrorMap(e -> new RedisTrouble("Ошибка индексации товара " + item.getId()));
+                .onErrorMap(e -> new RedisException("Ошибка индексации товара " + item.getId()));
     }
 
     @Override
@@ -74,7 +73,7 @@ public class CacheMainServiceImpl implements CacheMainService {
                     return reactiveRedisTemplate.opsForValue()
                             .set(key, bytes, TIME_TO_LIVE_CHISELKI_IN_MIN);
                 })
-                .onErrorMap(throwable -> new RedisTrouble("Не удалось сохранить картинку " + imgName));
+                .onErrorMap(throwable -> new RedisException("Не удалось сохранить картинку " + imgName));
     }
 
     @Override
@@ -85,7 +84,7 @@ public class CacheMainServiceImpl implements CacheMainService {
                 .flatMap(item ->
                         reactiveRedisTemplate.opsForZSet()
                                 .add("idx:items:price", item.getId(), item.getPrice().doubleValue())
-                                .onErrorMap(throwable -> new RedisTrouble("Ошибка индекса ID " + item.getId()))
+                                .onErrorMap(throwable -> new RedisException("Ошибка индекса ID " + item.getId()))
                 )
                 .collectList()
                 .map(results -> true);
@@ -99,7 +98,7 @@ public class CacheMainServiceImpl implements CacheMainService {
                 .flatMap(item ->
                         reactiveRedisTemplate.opsForZSet()
                                 .add("idx:items:alpha", item.getTitle() + ":" + item.getId().toString(), 0)
-                                .onErrorMap(throwable -> new RedisTrouble("Ошибка индекса ID " + item.getId()))
+                                .onErrorMap(throwable -> new RedisException("Ошибка индекса ID " + item.getId()))
                 )
                 .collectList()
                 .map(results -> true);
@@ -122,7 +121,7 @@ public class CacheMainServiceImpl implements CacheMainService {
                             );
                 })
                 .then(Mono.just(true))
-                .onErrorMap(throwable -> new RedisTrouble("Ошибка при создании поискового индекса"));
+                .onErrorMap(throwable -> new RedisException("Ошибка при создании поискового индекса"));
     }
 
     @Override

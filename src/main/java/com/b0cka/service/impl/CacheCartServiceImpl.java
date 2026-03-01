@@ -1,6 +1,6 @@
 package com.b0cka.service.impl;
 
-import com.b0cka.dto.HDto;
+import com.b0cka.dto.CartItemsDto;
 import com.b0cka.service.CacheCartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +60,7 @@ public class CacheCartServiceImpl implements CacheCartService {
     }
 
     @Override
-    public Mono<HDto> getItems() {
+    public Mono<CartItemsDto> getItems() {
 
         return reactiveRedisTemplate.opsForHash()
                 .entries(KEY)
@@ -68,7 +68,7 @@ public class CacheCartServiceImpl implements CacheCartService {
                         entry -> Long.valueOf(entry.getKey().toString()),
                         entry -> Integer.valueOf(entry.getValue().toString())
                 )
-                .map(map -> new HDto(map));
+                .map(map -> new CartItemsDto(map));
     }
 
     @Override
