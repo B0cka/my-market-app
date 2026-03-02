@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: Payment Service API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+paths:
+  /balance:
+    get:
+      summary: Получить текущий баланс (случайный)
+      operationId: getBalance
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDto'
+
+  /pay:
+    post:
+      summary: Провести платеж
+      operationId: performPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentDto'
+      responses:
+        '200':
+          description: Платеж прошел
+        '400':
+          description: Недостаточно средств
+        '500':
+          description: Ошибка сервиса
+
+components:
+  schemas:
+    BalanceDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+    PaymentDto:
+      type: object
+      properties:
+        sum:
+          type: number
+          format: double

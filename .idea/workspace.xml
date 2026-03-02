@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="967e4957-4a07-4831-936d-0b372e496933" name="Changes" comment="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок">
+      <change afterPath="$PROJECT_DIR$/market-app/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/dto/BalanceDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/dto/PaymentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/ex/BalanceError.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/PaymentIntegrationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/api/BalanceApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/api/PayApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/api/controller/PaymentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/model/BalanceDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/model/PaymentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/paymentServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/resources/payment-api.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/configuration/CacheWarmup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/configuration/RedisConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/controllers/CartController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/controllers/ItemController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/controllers/OrderController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/dto/CartDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/dto/CartItemsDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/dto/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/dto/ItemsPageDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/dto/OrdersDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/ex/NotFoundImageException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/ex/RedisException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/exceptionHandler/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/models/Item.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/models/Order.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/models/OrderItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/models/Paging.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/myMarketApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/repository/ItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/repository/OrderItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/repository/OrderRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/CacheCartService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/CacheMainService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/CartService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/ItemService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/OrderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/impl/CacheCartServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/impl/CacheMainServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/impl/CartServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/impl/ItemServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/b0cka/service/impl/OrderServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-master.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/coffee.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/headphones.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/iphone.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/macbook.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/speaker.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/cart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/item.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/items.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/order.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/orders.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/CacheMainServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/CartServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/ItemRepositoryR2dbcTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/ItemServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/MarketIntegrationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/OrderServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/b0cka/cont/PostgreContainer1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/application-test.properties" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Exception" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="reactive-market-app" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;B0cka&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/B0cka/my-market-app.git&quot;,
+    &quot;accountId&quot;: &quot;4cbc2f21-c925-4dcf-a070-fedd94293b96&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/b0cka/service/impl/CacheCartServiceImpl.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="38yeXewltTk1bCQc8c3A4STkaZA" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.myMarketApplication.executor": "Run",
+    "Explyt Spring.myMarketApplication.executor": "Run",
+    "Explyt Spring.paymentServiceApplication.executor": "Run",
+    "JUnit.All in my-market-app.executor": "Run",
+    "JUnit.CacheMainServiceImplTest.executor": "Run",
+    "JUnit.CartServiceImplTest.executor": "Run",
+    "JUnit.CartServiceTest.executor": "Run",
+    "JUnit.ItemRepositoryDataJpaTest.executor": "Run",
+    "JUnit.ItemRepositoryR2dbcTest.executor": "Run",
+    "JUnit.ItemServiceImplTest.executor": "Run",
+    "JUnit.MarketIntegrationTest.executor": "Run",
+    "JUnit.OrderRepositoryDataJpaTest.executor": "Run",
+    "JUnit.OrderServiceImplTest (1).executor": "Run",
+    "JUnit.OrderServiceImplTest.executor": "Run",
+    "JUnit.b0cka in my-market-app.executor": "Run",
+    "JUnit.java in my-market-app.executor": "Run",
+    "Maven. [clean,compile].executor": "Run",
+    "Maven. [clean].executor": "Run",
+    "Maven.market-parent [clean,compile].executor": "Run",
+    "Maven.my-market-app [-U,clean,package...].executor": "Run",
+    "Maven.my-market-app [-q,-DskipTests...].executor": "Run",
+    "Maven.my-market-app [clean,install,-DskipTests].executor": "Run",
+    "Maven.my-market-app [clean,install].executor": "Run",
+    "Maven.my-market-app [clean,package,-DskipTests].executor": "Run",
+    "Maven.my-market-app [clean,package].executor": "Run",
+    "Maven.my-market-app [clean].executor": "Run",
+    "Maven.my-market-app [package].executor": "Run",
+    "Maven.payment-service [org.openapitools:openapi-generator-maven-plugin:7.1.0:generate].executor": "Run",
+    "NotificationExplytEndpoints": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "#3 on redis-market-app",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/timur/OneDrive/Рабочий стол/my-market-app/src/main/java/com/b0cka/repository",
+    "last_opened_file_path": "C:/my-market-app/payment-service/src/main/java/com/b0cka/api",
+    "project.structure.last.edited": "Facets",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\my-market-app\payment-service\src\main\java\com\b0cka\api" />
+      <recent name="C:\my-market-app\payment-service\src\main\java\com\b0cka" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\my-market-app\payment-service\src\main\java\com\b0cka\model" />
+      <recent name="C:\my-market-app\payment-service\src\main\java\com\b0cka" />
+      <recent name="C:\my-market-app\payment-service\src\main\java\com\b0cka\api" />
+      <recent name="C:\Users\timur\OneDrive\Рабочий стол\my-market-app" />
+      <recent name="C:\Users\timur\OneDrive\Рабочий стол\my-market-app\app-core" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.b0cka" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn package" />
+      <command value="mvn clean package" />
+      <command value="mvn clean package -DskipTests" />
+      <command value="mvn clean install -DskipTests" />
+      <command value="mvn -q -DskipTests dependency:go-offline" />
+      <command value="mvn -U clean package -DskipTests " />
+      <command value="mvn clean install" />
+      <command value="mvn clean" />
+      <command value="mvn clean compile" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Explyt Spring.paymentServiceApplication">
+    <configuration name="Unnamed" type="CompoundRunConfigurationType">
+      <toRun name="myMarketApplication" type="Spring Boot" />
+      <toRun name="paymentServiceApplication" type="Spring Boot" />
+      <method v="2" />
+    </configuration>
+    <configuration name="OrderServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-market-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.b0cka.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.b0cka" />
+      <option name="MAIN_CLASS_NAME" value="com.b0cka.OrderServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.b0cka.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.b0cka.service" />
+      <option name="MAIN_CLASS_NAME" value="com.b0cka.service.OrderServiceImplTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="b0cka in my-market-app" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-market-app" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/com/b0cka" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in my-market-app" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-market-app" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="myMarketApplication" type="Spring Boot" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.b0cka.myMarketApplication" />
+      <module name="market-app" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="paymentServiceApplication" type="Spring Boot" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.b0cka.paymentServiceApplication" />
+      <module name="payment-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.b0cka.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.OrderServiceImplTest" />
+        <item itemvalue="JUnit.java in my-market-app" />
+        <item itemvalue="JUnit.b0cka in my-market-app" />
+        <item itemvalue="JUnit.OrderServiceImplTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="967e4957-4a07-4831-936d-0b372e496933" name="Changes" comment="" />
+      <created>1769776280972</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769776280972</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Создание и реализация поиска и получения товаров">
+      <option name="closed" value="true" />
+      <created>1769793084833</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1769793084834</updated>
+    </task>
+    <task id="LOCAL-00002" summary="+ и - в карточке товара">
+      <option name="closed" value="true" />
+      <created>1769801077066</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1769801077066</updated>
+    </task>
+    <task id="LOCAL-00003" summary="полная реализация CART">
+      <option name="closed" value="true" />
+      <created>1769886554047</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1769886554047</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Доорелазия ITEM и полная реализация ORDERS">
+      <option name="closed" value="true" />
+      <created>1769886606510</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1769886606510</updated>
+    </task>
+    <task id="LOCAL-00005" summary="TESTS">
+      <option name="closed" value="true" />
+      <created>1769888379525</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1769888379525</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Доделывание тестов, переиспользование контейнера, правильные моки">
+      <option name="closed" value="true" />
+      <created>1770724893052</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1770724893052</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Доделывание тестов, переиспользование контейнера, правильные моки">
+      <option name="closed" value="true" />
+      <created>1770725057971</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1770725057971</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Доделывание тестов, переиспользование контейнера, правильные моки">
+      <option name="closed" value="true" />
+      <created>1770734820969</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1770734820969</updated>
+    </task>
+    <task id="LOCAL-00009" summary="CART to reactive">
+      <option name="closed" value="true" />
+      <created>1770894982923</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1770894982923</updated>
+    </task>
+    <task id="LOCAL-00010" summary="ITEM to reactive">
+      <option name="closed" value="true" />
+      <created>1770895023002</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1770895023002</updated>
+    </task>
+    <task id="LOCAL-00011" summary="ALL to reactive">
+      <option name="closed" value="true" />
+      <created>1770895042924</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1770895042924</updated>
+    </task>
+    <task id="LOCAL-00012" summary="исправление докера(случайно убрал в docker-compose.yaml)">
+      <option name="closed" value="true" />
+      <created>1771084720075</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1771084720075</updated>
+    </task>
+    <task id="LOCAL-00013" summary="исправление ошибок">
+      <option name="closed" value="true" />
+      <created>1771084772659</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1771084772659</updated>
+    </task>
+    <task id="LOCAL-00014" summary="добавление тестов :)">
+      <option name="closed" value="true" />
+      <created>1771084859300</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1771084859300</updated>
+    </task>
+    <task id="LOCAL-00015" summary="подлючение Redis">
+      <option name="closed" value="true" />
+      <created>1771160490120</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1771160490120</updated>
+    </task>
+    <task id="LOCAL-00016" summary="создание кеша и самой логики сохранения в кеш">
+      <option name="closed" value="true" />
+      <created>1771160537779</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1771160537779</updated>
+    </task>
+    <task id="LOCAL-00017" summary="имплементация логики и контейнера в сервис">
+      <option name="closed" value="true" />
+      <created>1771160592156</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1771160592156</updated>
+    </task>
+    <task id="LOCAL-00018" summary="тесты">
+      <option name="closed" value="true" />
+      <created>1771160608326</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1771160608326</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Поправил Dto, добавил глобальный обработчик для ошибок, переименовал класс">
+      <option name="closed" value="true" />
+      <created>1772372971539</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1772372971539</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок">
+      <option name="closed" value="true" />
+      <created>1772378725418</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1772378725418</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Создание и реализация поиска и получения товаров" />
+    <MESSAGE value="+ и - в карточке товара" />
+    <MESSAGE value="полная реализация CART" />
+    <MESSAGE value="Доорелазия ITEM и полная реализация ORDERS" />
+    <MESSAGE value="TESTS" />
+    <MESSAGE value="Доделывание тестов, переиспользование контейнера, правильные моки" />
+    <MESSAGE value="CART to reactive" />
+    <MESSAGE value="ITEM to reactive" />
+    <MESSAGE value="ALL to reactive" />
+    <MESSAGE value="исправление докера(случайно убрал в docker-compose.yaml)" />
+    <MESSAGE value="исправление ошибок" />
+    <MESSAGE value="добавление тестов :)" />
+    <MESSAGE value="подлючение Redis" />
+    <MESSAGE value="создание кеша и самой логики сохранения в кеш" />
+    <MESSAGE value="имплементация логики и контейнера в сервис" />
+    <MESSAGE value="тесты" />
+    <MESSAGE value="Поправил Dto, добавил глобальный обработчик для ошибок, переименовал класс" />
+    <MESSAGE value="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок" />
+    <option name="LAST_COMMIT_MESSAGE" value="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок" />
+  </component>
+</project>
