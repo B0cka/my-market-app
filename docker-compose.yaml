@@ -1,22 +1,72 @@
+version: '3.8'
+
 services:
+
   db:
-    image: postgres:16
-    container_name: postgres1
+    image: postgres:15-alpine
+    container_name: market-postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: my-market-app
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: market_db
     ports:
       - "5432:5432"
-  app:
-    build: .
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - market-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: market-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - market-network
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: payment-service/Dockerfile
+    container_name: payment-service
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: 8081
+    networks:
+      - market-network
+
+  market-app:
+    build:
+      context: .
+      dockerfile: market-app/Dockerfile
+    container_name: market-app
     ports:
       - "8080:8080"
+    environment:
+
+      SPRING_R2DBC_URL: r2dbc:postgresql://db:5432/market_db
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: password
+
+      SPRING_LIQUIBASE_URL: jdbc:postgresql://db:5432/market_db
+      SPRING_LIQUIBASE_USER: postgres
+      SPRING_LIQUIBASE_PASSWORD: password
+
+      SPRING_DATA_REDIS_HOST: redis
+      APP_SERVICES_PAYMENT_URL: http://payment-service:8081
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       - db
-    restart: on-failure
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/my-market-app
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      - redis
+      - payment-service
+    networks:
+      - market-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  market-network:
+    driver: bridge
