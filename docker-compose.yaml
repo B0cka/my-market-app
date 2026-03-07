@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: market_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -24,44 +24,44 @@ services:
     networks:
       - market-network
 
-  payment-service:
-    build:
-      context: .
-      dockerfile: payment-service/Dockerfile
-    container_name: payment-service
-    ports:
-      - "8081:8081"
-    environment:
-      SERVER_PORT: 8081
-    networks:
-      - market-network
+#  payment-service:
+#    build:
+#      context: .
+#      dockerfile: payment-service/Dockerfile
+#    container_name: payment-service
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SERVER_PORT: 8081
+#    networks:
+#      - market-network
 
-  market-app:
-    build:
-      context: .
-      dockerfile: market-app/Dockerfile
-    container_name: market-app
-    ports:
-      - "8080:8080"
-    environment:
-
-      SPRING_R2DBC_URL: r2dbc:postgresql://db:5432/market_db
-      SPRING_R2DBC_USERNAME: postgres
-      SPRING_R2DBC_PASSWORD: password
-
-      SPRING_LIQUIBASE_URL: jdbc:postgresql://db:5432/market_db
-      SPRING_LIQUIBASE_USER: postgres
-      SPRING_LIQUIBASE_PASSWORD: password
-
-      SPRING_DATA_REDIS_HOST: redis
-      APP_SERVICES_PAYMENT_URL: http://payment-service:8081
-      SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      - db
-      - redis
-      - payment-service
-    networks:
-      - market-network
+#  market-app:
+#    build:
+#      context: .
+#      dockerfile: market-app/Dockerfile
+#    container_name: market-app
+#    ports:
+#      - "8080:8080"
+#    environment:
+#
+#      SPRING_R2DBC_URL: r2dbc:postgresql://db:5432/market_db
+#      SPRING_R2DBC_USERNAME: postgres
+#      SPRING_R2DBC_PASSWORD: password
+#
+#      SPRING_LIQUIBASE_URL: jdbc:postgresql://db:5432/market_db
+#      SPRING_LIQUIBASE_USER: postgres
+#      SPRING_LIQUIBASE_PASSWORD: password
+#
+#      SPRING_DATA_REDIS_HOST: redis
+#      APP_SERVICES_PAYMENT_URL: http://payment-service:8081
+#      SPRING_PROFILES_ACTIVE: docker
+#    depends_on:
+#      - db
+#      - redis
+#      - payment-service
+#    networks:
+#      - market-network
 
 volumes:
   postgres_data:

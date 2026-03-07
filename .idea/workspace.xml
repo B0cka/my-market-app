@@ -4,11 +4,56 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="967e4957-4a07-4831-936d-0b372e496933" name="Changes" comment="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок">
-      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/configuration/SecurityConfiguration.java" afterDir="false" />
+    <list default="true" id="967e4957-4a07-4831-936d-0b372e496933" name="Changes" comment="перый конфиг в filter">
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/configuration/OAuth2ClientConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/models/UserEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/CustomReactiveUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/TokenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/b0cka/configuration/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/market-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/configuration/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/configuration/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/configuration/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/configuration/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/exceptionHandler/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/exceptionHandler/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/models/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/models/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/repository/OrderItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/repository/OrderItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/repository/OrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/CacheCartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/CacheCartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/ItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/ItemServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/PaymentIntegrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/java/com/b0cka/service/impl/PaymentIntegrationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/market-app/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/src/main/resources/db/changelog/db.changelog-master.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/src/main/resources/db/changelog/db.changelog-master.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/exceptionHandler/GlobalExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/models/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/models/Order.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/repository/OrderItemRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/repository/OrderItemRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/repository/OrderRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/repository/OrderRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/CacheCartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/CacheCartServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/CartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/CartServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/ItemServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/ItemServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/OrderServiceImpl$Line.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/OrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/OrderServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/PaymentIntegrationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/com/b0cka/service/impl/PaymentIntegrationService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/classes/db/changelog/db.changelog-master.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/classes/db/changelog/db.changelog-master.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market-app/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/market-app/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/.openapi-generator-ignore" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/.openapi-generator-ignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/api/ApiUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/api/ApiUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/api/BalanceApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/api/BalanceApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/api/PayApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/api/PayApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/model/BalanceDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/model/BalanceDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/model/PaymentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/generated-sources/openapi/src/main/java/org/openapitools/model/PaymentDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payment-service/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +63,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Exception" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -75,6 +120,9 @@
     &quot;Maven. [clean,compile].executor&quot;: &quot;Run&quot;,
     &quot;Maven. [clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.market-parent [clean,compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.market-parent [clean,install,-DskipTests].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.market-parent [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.market-parent [clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.my-market-app [-U,clean,package...].executor&quot;: &quot;Run&quot;,
     &quot;Maven.my-market-app [-q,-DskipTests...].executor&quot;: &quot;Run&quot;,
     &quot;Maven.my-market-app [clean,install,-DskipTests].executor&quot;: &quot;Run&quot;,
@@ -119,16 +167,21 @@
       <command value="mvn package" />
       <command value="mvn clean package" />
       <command value="mvn clean package -DskipTests" />
-      <command value="mvn clean install -DskipTests" />
       <command value="mvn -q -DskipTests dependency:go-offline" />
       <command value="mvn -U clean package -DskipTests " />
-      <command value="mvn clean install" />
-      <command value="mvn clean" />
       <command value="mvn clean compile" />
+      <command value="mvn clean" />
+      <command value="mvn clean install" />
+      <command value="mvn clean install -DskipTests" />
     </option>
   </component>
   <component name="RunManager" selected="Explyt Spring.paymentServiceApplication">
     <configuration name="Unnamed" type="CompoundRunConfigurationType">
+      <toRun name="myMarketApplication" type="Spring Boot" />
+      <toRun name="paymentServiceApplication" type="Spring Boot" />
+      <method v="2" />
+    </configuration>
+    <configuration name="full" type="CompoundRunConfigurationType">
       <toRun name="myMarketApplication" type="Spring Boot" />
       <toRun name="paymentServiceApplication" type="Spring Boot" />
       <method v="2" />
@@ -199,6 +252,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Compound.full" />
+      <item itemvalue="Compound.Unnamed" />
+      <item itemvalue="Explyt Spring.myMarketApplication" />
+      <item itemvalue="Explyt Spring.paymentServiceApplication" />
+      <item itemvalue="JUnit.b0cka in my-market-app" />
+      <item itemvalue="JUnit.java in my-market-app" />
+      <item itemvalue="JUnit.OrderServiceImplTest" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.OrderServiceImplTest" />
@@ -377,7 +439,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772378725418</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="перый конфиг в filter">
+      <option name="closed" value="true" />
+      <created>1772570567554</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1772570567554</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -410,6 +480,7 @@
     <MESSAGE value="тесты" />
     <MESSAGE value="Поправил Dto, добавил глобальный обработчик для ошибок, переименовал класс" />
     <MESSAGE value="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок" />
-    <option name="LAST_COMMIT_MESSAGE" value="Убрал хардкор из кода, вынес в application.properties. Доработал выбрасывание ошибок" />
+    <MESSAGE value="перый конфиг в filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="перый конфиг в filter" />
   </component>
 </project>

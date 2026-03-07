@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  * PaymentDto
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-03-02T19:08:39.918815700+03:00[Europe/Moscow]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-03-07T19:47:34.127727300+03:00[Europe/Moscow]")
 public class PaymentDto {
 
   private Double sum;
