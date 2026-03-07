@@ -17,7 +17,7 @@ public class PaymentController implements BalanceApi, PayApi {
 
     @Override
     public Mono<ResponseEntity<BalanceDto>> getBalance(ServerWebExchange exchange) {
-        double randomBalance = 1000 + Math.random() * 9000;
+        double randomBalance = 10000 + Math.random() * 9000;
 
         BalanceDto dto = new BalanceDto();
         dto.setAmount(Math.round(randomBalance * 100.0) / 100.0);
@@ -30,7 +30,7 @@ public class PaymentController implements BalanceApi, PayApi {
         return paymentDto.map(dto -> {
             double cost = dto.getSum();
 
-            double currentRandomBalance = 1000 + Math.random() * 9000;
+            double currentRandomBalance = 10000 + Math.random() * 9000;
 
             log.info("Попытка оплаты: Сумма={}, Баланс={}", cost, currentRandomBalance);
 

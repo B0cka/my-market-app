@@ -10,12 +10,15 @@ import com.b0cka.repository.OrderRepository;
 import com.b0cka.service.CartService;
 import com.b0cka.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +28,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final OrderItemRepository orderItemRepository;
-
-    private record Line(Item item, int qty) {
-    }
 
    private final PaymentIntegrationService paymentIntegrationService;
 
@@ -56,7 +56,12 @@ public class OrderServiceImpl implements OrderService {
                                             Order order = new Order();
                                             order.setTotalSum((long) totalSum);
 
-                                            return orderRepository.save(order)
+                                            return ReactiveSecurityContextHolder.getContext()
+                                                    .map(ctx -> ctx.getAuthentication().getName())
+                                                    .flatMap(username -> {
+                                                        order.setUserId(username);
+                                                        return orderRepository.save(order);
+                                                    })
                                                     .flatMap(savedOrder -> {
 
                                                         List<OrderItem> orderItems = items.stream()
@@ -80,8 +85,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Mono<List<Order>> getAllOrders() {
-        return orderRepository.findAll()
-                .flatMap(order -> populateOrder(order))
+        return ReactiveSecurityContextHolder.getContext()
+                .map(ctx -> ctx.getAuthentication().getName())
+                .flatMapMany(username ->
+                        orderRepository.findAllByUserId(username)
+                )
+                .flatMap(this::populateOrder)
                 .collectList();
     }
 
@@ -93,27 +102,41 @@ public class OrderServiceImpl implements OrderService {
 
 
     private Mono<Order> populateOrder(Order order) {
-        return orderItemRepository.findAllByOrderId(order.getId())
-                .collectList()
-                .flatMap(orderItems -> {
-                    if (orderItems.isEmpty()) return Mono.just(order);
 
-                    List<Long> itemIds = orderItems.stream()
-                            .map(OrderItem::getItemId)
-                            .toList();
+        return ReactiveSecurityContextHolder.getContext()
+                .map(ctx -> ctx.getAuthentication().getName())
+                .flatMap(username -> {
 
-                    return itemRepository.findAllById(itemIds)
+                    if (!order.getUserId().equals(username)) {
+                        return Mono.empty();
+                    }
+
+                    return orderItemRepository.findAllByOrderId(order.getId())
                             .collectList()
-                            .map(realItems -> {
-                                Map<Long, Item> itemMap = realItems.stream()
-                                        .collect(java.util.stream.Collectors.toMap(Item::getId, i -> i));
+                            .flatMap(orderItems -> {
 
-                                for (OrderItem oi : orderItems) {
-                                    oi.setItem(itemMap.get(oi.getItemId()));
+                                if (orderItems.isEmpty()) {
+                                    return Mono.just(order);
                                 }
 
-                                order.setItems(orderItems);
-                                return order;
+                                List<Long> itemIds = orderItems.stream()
+                                        .map(OrderItem::getItemId)
+                                        .toList();
+
+                                return itemRepository.findAllById(itemIds)
+                                        .collectList()
+                                        .map(realItems -> {
+
+                                            Map<Long, Item> itemMap = realItems.stream()
+                                                    .collect(Collectors.toMap(Item::getId, i -> i));
+
+                                            for (OrderItem oi : orderItems) {
+                                                oi.setItem(itemMap.get(oi.getItemId()));
+                                            }
+
+                                            order.setItems(orderItems);
+                                            return order;
+                                        });
                             });
                 });
     }

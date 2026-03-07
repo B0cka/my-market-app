@@ -15,30 +15,38 @@ import reactor.core.publisher.Mono;
 public class PaymentIntegrationService {
 
     private final WebClient.Builder webClientBuilder;
+    private final TokenService tokenService;
 
     @Value("${app.services.payment.url}")
     private String paymentServiceUrl;
 
     public Mono<Double> getBalance() {
-        return webClientBuilder.baseUrl(paymentServiceUrl).build()
-                .get()
-                .uri("/balance")
-                .retrieve()
-                .bodyToMono(BalanceDto.class)
-                .map(BalanceDto::getAmount)
-                .doOnError(e -> log.error("Ошибка получения баланса: {}", e.getMessage()))
-                .onErrorReturn(0.0);
+        return tokenService.getAccessToken()
+                .flatMap(token ->
+                        webClientBuilder.baseUrl(paymentServiceUrl).build()
+                                .get()
+                                .uri("/balance")
+                                .headers(headers -> headers.setBearerAuth(token))
+                                .retrieve()
+                                .bodyToMono(BalanceDto.class)
+                                .map(BalanceDto::getAmount)
+                                .doOnError(e -> log.error("Ошибка получения баланса: {}", e.getMessage()))
+                                .onErrorReturn(0.0)
+                );
     }
 
     public Mono<Boolean> pay(Double sum) {
-        return webClientBuilder.baseUrl(paymentServiceUrl).build()
+        return tokenService.getAccessToken()
+                        .flatMap(token ->
+        webClientBuilder.baseUrl(paymentServiceUrl).build()
                 .post()
                 .uri("/pay")
                 .bodyValue(new PaymentDto(sum))
+                .headers(headers -> headers.setBearerAuth(token))
                 .retrieve()
                 .toBodilessEntity()
                 .map(response -> response.getStatusCode().is2xxSuccessful())
                 .doOnError(e -> log.error("Ошибка оплаты: {}", e.getMessage()))
-                .onErrorReturn(false);
+                .onErrorReturn(false));
     }
 }

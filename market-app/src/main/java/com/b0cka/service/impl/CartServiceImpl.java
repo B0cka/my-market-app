@@ -1,5 +1,6 @@
 package com.b0cka.service.impl;
 
+import com.b0cka.dto.CartItemsDto;
 import com.b0cka.dto.OrdersDto;
 import com.b0cka.repository.ItemRepository;
 import com.b0cka.service.CacheCartService;
@@ -38,7 +39,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Mono<Map<Long, Integer>> getItems() {
         return cartService.getItems()
-                .map(hDto -> hDto.getItemQuantities());
+                .map(CartItemsDto::getItemQuantities);
     }
 
 

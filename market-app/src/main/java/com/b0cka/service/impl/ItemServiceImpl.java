@@ -48,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
                 .map(tuple -> {
                     List<Item> pageItems = tuple.getT1();
                     Map<Long, Integer> cartMap = tuple.getT2();
-
+                    log.info("CART MAP = {}", cartMap);
                     pageItems.forEach(item -> item.setCount(cartMap.getOrDefault(item.getId(), 0)));
 
                     boolean hasNext = pageItems.size() > pageSize;
