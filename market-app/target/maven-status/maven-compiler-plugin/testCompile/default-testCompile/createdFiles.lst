@@ -1,0 +1,7 @@
+com\b0cka\CacheMainServiceImplTest.class
+com\b0cka\CartServiceImplTest.class
+com\b0cka\cont\PostgreContainer1.class
+com\b0cka\ItemRepositoryR2dbcTest.class
+com\b0cka\MarketIntegrationTest.class
+com\b0cka\service\ItemServiceImplTest.class
+com\b0cka\service\OrderServiceImplTest.class
